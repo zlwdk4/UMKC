@@ -21,6 +21,9 @@
     <ClInclude Include="Node.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sender.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">

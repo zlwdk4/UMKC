@@ -43,7 +43,7 @@ public:
 	void Merge(Node<T>*& H, Node<T>*& P, Node<T>*& Q);
 
 
-private:
+//private:
 	int count;
 	Node<T> *Head, *Tail;
 
@@ -169,8 +169,9 @@ const T List<T>::front() const{
 		return Head->data;
 	}
 	else{
-		return -1;
 		cout << "Head is null, Empty List." << endl;
+		return -1;
+		
 	}
 }
 
@@ -338,3 +339,20 @@ void List<T>::Merge(Node<T>*& H, Node<T>*& P, Node<T>*& Q)
 
 	
 }
+
+
+
+///structure for Packets
+struct Pkt {
+	char type;
+	int seqNum;
+
+	bool operator<=(const Pkt& rhs) const{
+		if (seqNum <= rhs.seqNum){
+			return true;
+		}
+		else {
+			return false; 
+		}
+	}
+};
