@@ -23,6 +23,7 @@ public:
 
 	void push_front(const T& item);
 	void push_back(const T& item);
+    void push_ordered(const T& item);
 	void clear();
 	void sort(); //merge sort
 	void printList();
@@ -31,6 +32,7 @@ public:
 	int size() const;
     void pop_front();
     void pop_back();
+ 
 
 
 	//Merge Sort Method 
@@ -98,6 +100,35 @@ void List<T>::push_back(const T& item){
 
 	
 }
+//adding to an ordered list
+template<class T>
+void List<T>::push_ordered(const T& item){
+    if (item <= Head->data) { //put in front
+        push_front(item);
+        count++;
+    }
+    if (item >= Tail->data) { //put in back
+        push_back(item);
+        count++;
+    }
+    else{ //find correct location
+        Node<T> *tmpNode = Head;
+        while (item > tmpNode->data) {
+            tmpNode = tmpNode->next;
+        }
+        //found location in front of insertion site
+        Node<T> *InsertionNode = new Node<T>(item); //new node is read for insertion
+        tmpNode->prev->next = InsertionNode; //setttng prev node to point at new node
+        InsertionNode->prev = tmpNode->prev; //new node is pointing at node behind it
+        InsertionNode->next = tmpNode; //new node is pointing at node in front
+        tmpNode->prev = InsertionNode; //front node is pointing at previous node
+        count++;
+        
+    }
+}
+
+
+
 template<class T>
 void List<T>::clear(){
 	
