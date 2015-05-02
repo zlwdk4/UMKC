@@ -16,6 +16,8 @@ int main(){
 	
 
 	List<int> Mylist, Mylist2;
+    
+    cout<< "IsEmpty? " <<   Mylist.isEmpty() <<endl;
 
 	for (int i = 0; i < 7; i++){
 		

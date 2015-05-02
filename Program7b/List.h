@@ -32,6 +32,7 @@ public:
 	int size() const;
     void pop_front();
     void pop_back();
+    bool isEmpty();
  
 
 
@@ -220,7 +221,15 @@ void List<T>::pop_back(){
     }
 }
 
-
+template<class T>
+bool List<T>::isEmpty(){
+    if (Head == nullptr) {
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 
 
 
