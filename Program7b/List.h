@@ -139,7 +139,7 @@ void List<T>::clear(){
 	count = 0; //zero items in list
 }
 
-
+//print List
 template<class T>
 void List<T>::printList(){
 
@@ -150,11 +150,13 @@ void List<T>::printList(){
 	else{
 		Node<T> *temp;
 		temp = Head;
+		
 		while (temp != nullptr){
 		
 			cout << temp->data << endl;
 			temp = temp->next;
-
+			
+			
 		}
 
 	}
@@ -197,6 +199,7 @@ void List<T>::pop_front(){
     else{
         Node<T> *nodePtr = Head;
         Head = Head->next;
+		Head->prev = nullptr;
         delete nodePtr;
         count--;
     }
@@ -211,6 +214,7 @@ void List<T>::pop_back(){
     else{
         Node<T> *nodePtr = Tail;
         Tail = Tail->prev;
+		Tail->next = nullptr;
         delete nodePtr;
         count--;
     }
@@ -233,9 +237,11 @@ void List<T>::sort()
 {
 	Sort(Head);
 	
-	//Placing tail and end of newly merged list
+	//Placing tail and end of newly merged list 
+	Head->prev = nullptr; //cleaning first prev
 	Node<T> *tmpNode = Head;
 	Node<T> *prevNode = Head;
+
 	while (tmpNode->next != nullptr){ 
 		prevNode = tmpNode;
 		tmpNode = tmpNode->next;

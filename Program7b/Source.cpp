@@ -43,9 +43,9 @@ int main(){
     
     Mylist.printList();
     
-    Mylist.push_ordered(5);
+    //Mylist.push_ordered(5);
     cout << endl << "Pushing Ordered:" <<endl;
-     Mylist.printList();
+    Mylist.printList();
 
 	
 
