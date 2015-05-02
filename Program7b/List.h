@@ -113,7 +113,7 @@ void List<T>::push_ordered(const T& item){
     }
     else{ //find correct location
         Node<T> *tmpNode = Head;
-        while (item > tmpNode->data) {
+        while (item >= tmpNode->data) {
             tmpNode = tmpNode->next;
         }
         //found location in front of insertion site
