@@ -28,7 +28,9 @@ public:
 	void printList();
 	const T front() const; 
 	const T back() const;
-	int size() const; 
+	int size() const;
+    void pop_front();
+    void pop_back();
 
 
 	//Merge Sort Method 
@@ -155,6 +157,34 @@ int List<T>::size() const{
 	return count;
 }
 
+//removes front item from list
+template<class T>
+void List<T>::pop_front(){
+    if (Head == nullptr) {
+        //do nothing
+        cout <<"Trying to pop from empty list"<<endl;
+    }
+    else{
+        Node<T> *nodePtr = Head;
+        Head = Head->next;
+        delete nodePtr;
+        count--;
+    }
+}
+//removes item from back of list
+template<class T>
+void List<T>::pop_back(){
+    if (Head == nullptr) {
+        //do nothing
+        cout <<"Trying to pop from empty list"<<endl;
+    }
+    else{
+        Node<T> *nodePtr = Tail;
+        Tail = Tail->prev;
+        delete nodePtr;
+        count--;
+    }
+}
 
 
 

@@ -36,8 +36,12 @@ int main(){
 
 	Mylist.sort(); 
 	Mylist.printList();
+    
+    Mylist.pop_front();
 
-	cout << "Front: " << Mylist.front() << " and Back: " << Mylist.back() << " Size of List: " << Mylist.size() << endl;
+	cout << "Front: " << Mylist.front() << " and Back: " << Mylist.back() << " Size of List: " << Mylist.size() << endl<<endl;
+    
+    Mylist.printList();
 
 	
 
