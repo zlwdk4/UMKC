@@ -100,6 +100,7 @@ void List<T>::push_back(const T& item){
 
 	
 }
+
 //adding to an ordered list
 template<class T>
 void List<T>::push_ordered(const T& item){
@@ -126,8 +127,6 @@ void List<T>::push_ordered(const T& item){
         
     }
 }
-
-
 
 template<class T>
 void List<T>::clear(){
@@ -237,11 +236,12 @@ void List<T>::sort()
 	//Placing tail and end of newly merged list
 	Node<T> *tmpNode = Head;
 	Node<T> *prevNode = Head;
-	while (tmpNode != nullptr){
+	while (tmpNode->next != nullptr){ 
 		prevNode = tmpNode;
 		tmpNode = tmpNode->next;
+		tmpNode->prev = prevNode; //setting all prev ptrs correctly
 	}
-	Tail = prevNode;
+	Tail = prevNode->next;
 }
 
 template<class T>
