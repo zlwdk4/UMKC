@@ -11,16 +11,20 @@ class Sender{
 public:
 	Sender(){ ; } //do nothing lists are already initialized to safe values
 	void setup(int NPkts);
+	Pkt send();
 
 //private:
 	List<Pkt> outPkts, inPkts; //two list OUT queued up for outgoing packets and IN for ACK pkts
+	int pktsToSend, pktsLeft;
 
 
 };
 
-//filling outgoing queue
+//filling outgoing queue and preping incoming queue
 void Sender::setup(int NPkts){
-	for (int i = 0; i < NPkts; i++){ //filling outgoing queue with data packets
+
+	//filling outgoing queue with data packets
+	for (int i = 1; i <= NPkts; i++){ 
 		Pkt tmpPacket; 
 		tmpPacket.seqNum = i; 
 		
@@ -30,9 +34,24 @@ void Sender::setup(int NPkts){
 		else{
 			tmpPacket.type = 'D';
 		}
-		
 		outPkts.push_back(tmpPacket);
 		
 
 	}
+
+	//prepping incoming queue with one acknowledge packet
+	Pkt inTempPkt;
+	inTempPkt.seqNum = 0;
+	inTempPkt.type = 'A';
+	inPkts.push_back(inTempPkt);
+
+}
+
+//return the first packet 
+Pkt Sender::send(){
+	Pkt pktToReturn;
+	pktToReturn = outPkts.front();
+	outPkts.pop_front(); 
+
+	return pktToReturn; 
 }
