@@ -110,8 +110,12 @@ void Sender::process(){
 
 //checking to see if we've finished
 bool Sender::finished(){
-	if (inPkts.back().type == 'F')
+	if (inPkts.back().type == 'F'){
+		cout << "Sender::finished(): Final Pkt Recieved and Confirmed" << endl;
+		cout << "Closing Connection..."<<endl;
 		return true;
-	else
-		return false; 
+	}
+	else{
+		return false;
+	}
 }
