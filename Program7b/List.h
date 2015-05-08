@@ -170,7 +170,7 @@ const T List<T>::front() const{
 	}
 	else{
 		cout << "Head is null, Empty List." << endl;
-		return -1;
+		//return -1;
 		
 	}
 }
@@ -181,7 +181,7 @@ const T List<T>::back() const{
 		return Tail->data;
 	}
 	else{
-		return -1;
+		//return -1;
 		cout << "Tail is null, Empty List." << endl; 
 	}
 }
@@ -348,11 +348,32 @@ struct Pkt {
 	int seqNum;
 
 	bool operator<=(const Pkt& rhs) const{
-		if (seqNum <= rhs.seqNum){
-			return true;
-		}
-		else {
-			return false; 
-		}
+		return (seqNum <= rhs.seqNum);
 	}
+
+	bool operator<(const Pkt& rhs) const {
+		return (seqNum < rhs.seqNum);
+	}
+
+	bool operator>(const Pkt& rhs) const {
+		return (seqNum > rhs.seqNum);
+	}
+
+	bool operator>=(const Pkt& rhs) const {
+		return (seqNum >= rhs.seqNum);
+	}
+
+	bool operator==(const Pkt& rhs) const {
+		return (seqNum == rhs.seqNum);
+	}
+
+	bool operator!=(const Pkt& rhs) const {
+		return (seqNum != rhs.seqNum);
+	}
+
+	friend ostream& operator<<(ostream & out, const Pkt & thePkt){
+		cout << "Pkt Number: " << thePkt.seqNum << " Type: " << thePkt.type << endl;
+		return out; 
+	}
+
 };

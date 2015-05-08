@@ -15,18 +15,20 @@ int main(){
 	
 	//List<Pkt> Packets; 
 	////Packets.printList();
-	//Pkt bob;
-	//Packets.push_back(bob); 
-	//
 	
-	//
+	//Packets.push_back(bob); 
 	
 	Sender theSender; 
+	 
 
-	theSender.setup(5); 
+	theSender.setup(11); 
 	
-	//testing comparison operator for structs
-	cout << (theSender.outPkts.Head->data <= theSender.outPkts.Head->next->data);
+	theSender.process(); 
+
+	cout << theSender.outPkts.back()<<endl;
+	cout << theSender.outPkts.front() << endl;
+	cout << theSender.outPkts.size()<<endl;
+
 
 	system("pause");
 	return 0;
