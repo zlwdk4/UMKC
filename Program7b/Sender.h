@@ -77,7 +77,7 @@ void Sender::process(){
 		Pkt newOutPkt; //create new pkt to add
 		newOutPkt.seqNum = pktsToSend + 1;
 		newOutPkt.type = 'F';
-		outPkts.push_back(newOutPkt);
+		inPkts.push_back(newOutPkt);
 	}
 
 
