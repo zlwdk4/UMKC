@@ -66,6 +66,7 @@
   <ItemGroup>
     <ClInclude Include="List.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Receiver.h" />
     <ClInclude Include="Sender.h" />
   </ItemGroup>
   <ItemGroup>

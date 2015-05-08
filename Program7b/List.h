@@ -169,7 +169,7 @@ const T List<T>::front() const{
 		return Head->data;
 	}
 	else{
-		cout << "Head is null, Empty List." << endl;
+		cout << "List<T>::front(): Head is null, Empty List." << endl;
 		//return -1;
 		
 	}
@@ -191,19 +191,30 @@ int List<T>::size() const{
 	return count;
 }
 
-//removes front item from list
+//removes front item from front of list
 template<class T>
 void List<T>::pop_front(){
     if (Head == nullptr) {
         //do nothing
-        cout <<"Trying to pop from empty list"<<endl;
+        cout <<"List<T>::pop_front(): Trying to pop from empty list"<<endl;
     }
     else{
-        Node<T> *nodePtr = Head;
-        Head = Head->next;
-		Head->prev = nullptr;
-        delete nodePtr;
-        count--;
+		//Popping from list with more than 1 node
+		if (Head->next != nullptr){
+			Node<T> *nodePtr = Head;
+			Head = Head->next;
+			Head->prev = nullptr;
+			delete nodePtr;
+			count--;
+		}
+
+		//popping last item from list
+		else{
+			Node<T> *nodePtr = Head;
+			Head = nullptr;
+			delete nodePtr; 
+		}
+       
     }
 }
 //removes item from back of list
@@ -247,17 +258,21 @@ void List<T>::sort()
 {
 	Sort(Head);
 	
-	//Placing tail and end of newly merged list 
-	Head->prev = nullptr; //cleaning first prev
-	Node<T> *tmpNode = Head;
-	Node<T> *prevNode = Head;
+	if (Head != nullptr){
+		//Placing tail and end of newly merged list 
+		Head->prev = nullptr; //cleaning first prev
+		Node<T> *tmpNode = Head;
+		Node<T> *prevNode = Head;
 
-	while (tmpNode->next != nullptr){ 
-		prevNode = tmpNode;
-		tmpNode = tmpNode->next;
-		tmpNode->prev = prevNode; //setting all prev ptrs correctly
+		while (tmpNode->next != nullptr){
+			prevNode = tmpNode;
+			tmpNode = tmpNode->next;
+			tmpNode->prev = prevNode; //setting all prev ptrs correctly
+		}
+		Tail = prevNode->next;
 	}
-	Tail = prevNode->next;
+
+	
 }
 
 template<class T>
