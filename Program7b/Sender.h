@@ -14,7 +14,6 @@ public:
 	bool has_data() const;
 	Pkt send();
 	void process();
-	
 	bool finished();
 
 

@@ -27,6 +27,9 @@
     <ClInclude Include="Receiver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">

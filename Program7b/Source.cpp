@@ -6,6 +6,7 @@
 #include <time.h>       /* time */
 #include "Sender.h"
 #include "Receiver.h"
+#include "Network.h"
 using namespace std;
 
 
@@ -14,61 +15,29 @@ using namespace std;
 //git random comment
 int main(){
 	
-	//List<Pkt> Packets; 
-	////Packets.printList();
-	
-	//Packets.push_back(bob); 
-	/*
-	Sender theSender; 
-	theSender.setup(11);
+	Sender sender;
+	Receiver rec;
+	Network network;
+	int roundCnt = 0;
+	sender.setup(5);
+	rec.setup();
+	while (sender.finished() == false){
+		sender.process();
+		rec.process();
+		network.pick_up(sender);
+		network.pick_up(rec);
+		network.deliver(sender);
+		network.deliver(rec);
 
-	Pkt newPkt1;
-	newPkt1.seqNum = 12;
-	newPkt1.type = 'A';
-
-	while (theSender.finished() == false){
-		
-		theSender.process();
-
-		theSender.inPkts.push_back(newPkt1);
-		cout << theSender.outPkts.back();
+		roundCnt++;
+		cout << endl << "Round: " << roundCnt << " complete." << endl;
 		system("pause");
-		theSender.process();
+		
 	}
 	
-	*/
-
-	Receiver theRec;
-	Pkt pkt1;
-	pkt1.seqNum = 1;
-	pkt1.type = 'D';
-
-	Pkt pkt2;
-	pkt2.seqNum = 2;
-	pkt2.type = 'D';
-
-	Pkt pkt3;
-	pkt3.seqNum = 3;
-	pkt3.type = 'F';
-
-
-	theRec.setup();
-	cout << theRec.rAckBox.front();
-
-	theRec.receive(pkt1);
-	theRec.receive(pkt2);
-
-	theRec.process();
 	
 
 	
-	theRec.receive(pkt3);
-
-	theRec.send();
-	cout << theRec.rAckBox.front();
-	cout << theRec.rAckBox.back();
-
-	theRec.process();
 
 	system("pause");
 	return 0;
