@@ -42,7 +42,7 @@ void Network::pick_up(Sender & theSender){
 		DpktsfromSender.push_back(theSender.send()); //grab Data Pkt from Sender and put in Vector
 		*fout  << DpktsfromSender.back().seqNum << ", ";
 	}
-	*fout << "--> end pickup" << endl<<endl;
+	*fout << "--> end pickup" << endl;
 	
 	//3% Chance Corrupt Pkt
 	if (rand() % 100 <3){
