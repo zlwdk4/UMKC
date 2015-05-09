@@ -1,14 +1,15 @@
+//Chris Walter
+//Program7
+///List Class .h File -------->
+//includes struct and merge sort
+
+
+
 
 #pragma once
 #include <iostream>
-
 using namespace std;
-
 #include "Node.h"
-
-
-
-///List Class .h File -------->
 
 template<class T>
 class List
@@ -17,7 +18,7 @@ public:
 	List(){ count = 0; Head = Tail = nullptr; }
 	~List(){ clear(); } //destructor 
 	const List<T>& operator=(const List<T>& rhs);
-	//List(const List<T> & other); copy constructor
+	
 
 	//Methods
 	void printList();
@@ -45,7 +46,7 @@ public:
 	void Merge(Node<T>*& H, Node<T>*& P, Node<T>*& Q);
 
 
-//private:
+
 	int count;
 	Node<T> *Head, *Tail;
 	ofstream *fout;

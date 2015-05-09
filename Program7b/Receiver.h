@@ -1,9 +1,9 @@
-#pragma once
+//Chris Walter
+//Program7
 
+#pragma once
 #include <iostream>
 #include "List.h"
-
-
 using namespace std; 
 
 class Receiver{

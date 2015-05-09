@@ -1,3 +1,7 @@
+//Chris Walter
+//Program7
+//Node Class which is called by List Class
+
 #pragma once
 using namespace std;
 #include <iostream>

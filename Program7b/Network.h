@@ -1,5 +1,9 @@
-#pragma once
+//Chris Walter
+//Program7
 
+//Network Class .h file ---->
+
+#pragma once
 #include "List.h"
 #include <list>
 #include "Sender.h"
@@ -31,11 +35,10 @@ public:
 
 
 //Pick up from Sender
-
 void Network::pick_up(Sender & theSender){
 	
 	//while sender has Pkts and we have less than 4 in the vector pick up.
-	*fout<<endl << "Network::pick_up(): from Sender Pkts -->#";
+	*fout << "Network::pick_up(): from Sender Pkts -->#";
 	
 	while (theSender.outPkts.size() > 0 && DpktsfromSender.size() < 4){
 		
@@ -83,7 +86,7 @@ void Network::deliver(Sender& theSender){
 
 //Deliver up tp 4 to Receiver
 void Network::deliver(Receiver& theRec){
-	*fout << endl << "Network::Deliver(): to Receiver Pkts -->#";
+	*fout<< "Network::Deliver(): to Receiver Pkts -->#";
 	
 	while (DpktsfromSender.size() > 0){
 		theRec.rInbox.push_back(DpktsfromSender.front()); //deliver one packet from ACK vector
