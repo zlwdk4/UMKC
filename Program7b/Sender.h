@@ -68,7 +68,7 @@ void Sender::process(){
 	//checking last acknowledged pkt
 	int LastAcked = inPkts.back().seqNum;
 
-	cout << "Sender.process(): LastACKed == " << LastAcked << " queueing up 10 packets to send" << endl;
+	cout << "Sender.process(): LastACKed == " << LastAcked << " queueing up packets to send" << endl;
 
 	//Check to see if we sent all packets if so prepare final
 	if (inPkts.back().seqNum >= pktsToSend){

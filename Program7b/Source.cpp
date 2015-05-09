@@ -31,6 +31,8 @@ int main(){
 
 		roundCnt++;
 		cout << endl << "Round: " << roundCnt << " complete." << endl;
+		cout << "Sender.OutPkt.Back(): " << sender.outPkts.back();
+		cout << "Sender.Inpkts.Back(): "<<sender.inPkts.back();
 		system("pause");
 		
 	}

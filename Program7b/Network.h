@@ -24,20 +24,21 @@ private:
 void Network::pick_up(Sender & theSender){
 	
 	//while sender has Pkts and we have less than 4 in the vector pick up.
-	cout << "Network::pick_up(): Picking up from Sender" << endl;
+	cout<<endl << "Network::pick_up(): Picking up from Sender" << " -->" << endl;
+	
 	while (theSender.outPkts.size() > 0 && DpktsfromSender.size() < 4){
 		DpktsfromSender.push_back(theSender.send()); //grab Data Pkt from Sender and put in Vector
+		cout << "Network::pick_up(): Picked up Pkt: #" << DpktsfromSender.back().seqNum << " from Sender" << endl;
 	}
-
+	cout << "---> end delivery" << endl<<endl;
 	//add dropping stuff later
 }
 
 //Pick up from Receiver
 void Network::pick_up(Receiver & theRec){
-	cout << "Network::pick_up(): Picking up from Receiver" << endl;
-	while (theRec.rAckBox.size() > 0 && AckPktsfromReceiver.size() < 4){
-		AckPktsfromReceiver.push_back(theRec.send()); //grab Data Pkt from Receiver and put in Vector
-	}
+	
+	AckPktsfromReceiver.push_back(theRec.send()); //grab Data Pkt from Receiver and put in Vector
+	cout << "Network::pick_up(): Picked up Pkt: #"<< AckPktsfromReceiver.back().seqNum << " from Receiver" << endl;
 
 }
 
@@ -52,9 +53,13 @@ void Network::deliver(Sender& theSender){
 
 //Deliver to Receiver
 void Network::deliver(Receiver& theRec){
-	cout << "Network::pick_up(): Delivering to Sender" << endl;
+	cout << endl << "Network::Deliver(): Delivering to Receiver" << " -->"<< endl;
+	
 	while (DpktsfromSender.size() > 0){
 		theRec.rInbox.push_back(DpktsfromSender.back()); //deliver one packet from ACK vector
+		cout << "Network::Deliver(): Delivering Pkt: #" << DpktsfromSender.back().seqNum << " to Receiver" << endl;
 		DpktsfromSender.pop_back(); //delete delivered packet
+		
 	}
+	cout << "---> end delivery" << endl;
 }
