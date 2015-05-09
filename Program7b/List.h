@@ -20,19 +20,21 @@ public:
 	//List(const List<T> & other); copy constructor
 
 	//Methods
-
+	void printList();
 	void push_front(const T& item);
 	void push_back(const T& item);
     void push_ordered(const T& item);
 	void clear();
 	void sort(); //merge sort
-	void printList();
+	void printList2();
 	const T front() const; 
 	const T back() const;
 	int size() const;
     void pop_front();
     void pop_back();
     bool isEmpty();
+	void setFout(ofstream* out){ fout = out; }
+	
  
 
 
@@ -46,12 +48,36 @@ public:
 //private:
 	int count;
 	Node<T> *Head, *Tail;
+	ofstream *fout;
 
 
 
 };
 
 //implementation ---------->
+
+template<class T>
+void List<T>::printList(){
+	if (Head != nullptr){
+
+		Node<T> *tmpNode = Head;
+		int PrintCount = 1;
+		int tot = this->size();
+		*fout << "Head:" << Head << " " << Head->data << endl;
+		while (tmpNode != nullptr) { 
+			*fout << "Node:"<< PrintCount<<"/"<<tot << tmpNode->data;
+			*fout << "PrevPtr:" << tmpNode->prev << " NxtPtr:" << tmpNode->next << " Self:" << tmpNode<< endl;
+			tmpNode = tmpNode->next;
+			PrintCount++;
+		}
+		*fout << "Tail:" << Tail<< " " << Tail->data<<endl;
+	}
+	if (Head == nullptr){
+		*fout << "Empty List."<<endl;
+	}
+	
+}
+
 
 template<class T>
 const List<T>& List<T>::operator=(const List<T>& rhs){
@@ -142,7 +168,7 @@ void List<T>::clear(){
 
 //print List
 template<class T>
-void List<T>::printList(){
+void List<T>::printList2(){
 
 	if (Head == nullptr){
 		cout << "Empty List" << endl;
@@ -155,11 +181,8 @@ void List<T>::printList(){
 		while (temp != nullptr){
 		
 			cout << temp->data << endl;
-			temp = temp->next;
-			
-			
+			temp = temp->next;		
 		}
-
 	}
 }
 
@@ -196,7 +219,7 @@ template<class T>
 void List<T>::pop_front(){
     if (Head == nullptr) {
         //do nothing
-        cout <<"List<T>::pop_front(): Trying to pop from empty list"<<endl;
+        //cout <<"List<T>::pop_front(): Trying to pop from empty list"<<endl;
     }
     else{
 		//Popping from list with more than 1 node
@@ -258,6 +281,12 @@ Provided by Mr. Hare.
 template<class T>
 void List<T>::sort()
 {
+	//don't sort if only one item
+	if (this->size() < 2){
+		//do nothing
+	}
+	
+	else{
 	Sort(Head);
 	
 	if (Head != nullptr){
@@ -272,6 +301,7 @@ void List<T>::sort()
 			tmpNode->prev = prevNode; //setting all prev ptrs correctly
 		}
 		Tail = prevNode->next;
+		}
 	}
 
 	
@@ -350,15 +380,10 @@ void List<T>::Merge(Node<T>*& H, Node<T>*& P, Node<T>*& Q)
 		LastMerged->next = Q;
 	else{
 		LastMerged->next = P;
-	}
-
-	
-
-	
+	}	
 }
 
-
-
+///structure for Packets
 ///structure for Packets
 struct Pkt {
 	char type;
@@ -389,8 +414,8 @@ struct Pkt {
 	}
 
 	friend ostream& operator<<(ostream & out, const Pkt & thePkt){
-		cout << "Pkt Number: " << thePkt.seqNum << " Type: " << thePkt.type << endl;
-		return out; 
+		out << "Pkt Number: " << thePkt.seqNum << " Type: " << thePkt.type << endl;
+		return out;
 	}
 
 };

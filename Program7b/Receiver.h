@@ -15,12 +15,13 @@ public:
 	Pkt send();
 	void receive(const Pkt & thePkt);
 	void process();
+	void setFout(ofstream* out){ fout = out; }
 
 //private:
 	List<Pkt> rInbox, rAckBox;
 	int LastAckNumber;
 	bool FpktReceived;
-
+	ofstream *fout;
 
 };
 
@@ -45,7 +46,7 @@ Pkt Receiver::send(){
 	Pkt pktToReturn;
 	pktToReturn = rAckBox.front();
 	rAckBox.pop_front(); //remoing packet 
-	cout << "Receiver::Send(): Sending ACK Packet: " << pktToReturn.seqNum << endl;
+	*fout << "Receiver::Send(): Sending ACK Packet: " << pktToReturn.seqNum << endl;
 	return pktToReturn;
 }
 
@@ -56,30 +57,36 @@ void Receiver::receive(const Pkt & thePkt){
 		
 	}
 	else{
-		cout << "Receiver::receive(): Dropping courrupted Packet." << endl;
+		*fout << "Receiver::receive(): Dropping courrupted Packet." << endl;
 	}
 }
 
 //process just arrived pkts and put them in ack
 void Receiver::process(){
-	//rInbox.sort(); //lower case sort is primary merge sort
+	rInbox.sort(); //lower case sort is primary merge sort
 	
-	cout << "Receiver::process(): LastAck: "<< LastAckNumber<< " Sorting Incoming Pkts --> #";
+	*fout << "Receiver::process(): LastAck: "<< LastAckNumber<< " Sorting Incoming Pkts --> #";
 	
 	//updating ACK pkts and popping them from rINbox
 	while (rInbox.size() > 0){
 		if (rInbox.back().type == 'F'){
 			FpktReceived = true;
-			cout << "Receiver::process(): Final Packet Found" << endl;
+			*fout << "Receiver::process(): Final Packet Found" << endl;
 			rInbox.pop_front();
 			break;
 		}
 		else{
 
 			if (rInbox.front().seqNum == LastAckNumber + 1){ //found next pkt in sequence
-				cout << rInbox.front().seqNum << "Type:" << rInbox.front().type << ", ";
+				*fout << rInbox.front().seqNum << "Type:" << rInbox.front().type << ", ";
 				//checking to see if it's the last pkt			
 				LastAckNumber++;
+				rInbox.pop_front();
+			}
+
+			//found duplicate
+			if (rInbox.front().seqNum <= LastAckNumber){
+				*fout << "Receiver::process(): Duplicate Pkt Found: Dropping: " << rInbox.front().seqNum << endl;
 				rInbox.pop_front();
 			}
 			else{ //still waiting on another packet
@@ -87,7 +94,7 @@ void Receiver::process(){
 			}
 		}
 	}
-	cout << "<--end" << endl;
+	*fout << "<--end" << endl;
 	//prepping newAckPkt
 	Pkt NewAckPkt;
 
@@ -103,7 +110,7 @@ void Receiver::process(){
 	
 	// adding newpkt to rAckBox
 	rAckBox.push_front(NewAckPkt);
-	cout << "Receiver::process(): Adding to AckList " << NewAckPkt;
+	*fout << "Receiver::process(): Adding to AckList " << NewAckPkt;
 
 	
 

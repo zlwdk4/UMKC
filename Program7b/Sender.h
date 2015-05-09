@@ -5,6 +5,7 @@
 #include <iostream>
 using namespace std;
 #include "List.h"
+#include <fstream>
 
 
 
@@ -17,11 +18,13 @@ public:
 	void process();
 	bool finished();
 	int getNpkts(){ return pktsToSend; }
+	void setFout(ofstream* out){ fout = out; }
 
 //private:
 	List<Pkt> outPkts, inPkts; //two list OUT queued up for outgoing packets and IN for ACK pkts
 	int pktsToSend, pktsLeft, LastAcked;
 	bool cycleFinished; 
+	ostream *fout;
 
 
 };
@@ -41,13 +44,6 @@ void Sender::setup(int NPkts){
 
 	cycleFinished = false; 
 
-	/*//prepping outgoing queue with one Data packet
-	if (NPkts >0){
-		Pkt outTempPkt;
-		outTempPkt.seqNum = 1;
-		outTempPkt.type = 'D';
-		outPkts.push_back(outTempPkt);
-	}*/
 }
 //check to see if outgoing list has data to send
 bool Sender::has_data() const{
@@ -76,7 +72,7 @@ void Sender::process(){
 		}
 		inPkts.pop_front(); //removing acked pkt
 	}
-	std::cout << "Sender::process(): Last Acked: " << LastAcked << endl;
+	*fout << "Sender::process(): Last Acked: " << LastAcked << endl;
 	
 	//check if finshed
 	if (LastAcked >= pktsToSend){
@@ -85,21 +81,19 @@ void Sender::process(){
 		newOutPkt.seqNum = pktsToSend + 1;
 		newOutPkt.type = 'F';
 		outPkts.push_back(newOutPkt); //adding pkt to outgoing list
-		std::cout << "Sender.process(): All Pkts Sent and Acknowledged Prepping Finish Pkt" << newOutPkt;
+		*fout << "Sender.process(): All Pkts Sent and Acknowledged Prepping Finish Pkt"; 
+		*fout << newOutPkt;
 	}
 
 	//not finshed need to add more pkts to outgoing
 	else{
 		if (outPkts.size() < 4){
 
-
-			//in case outlist is empty
-			if (outPkts.size() < 1){
-				std::cout << "Sender::process(): OutGoing List < 1 Adding --> # ";
+				*fout << "Sender::process(): OutGoing List < 1 Adding --> # ";
 				int outPktCounter = LastAcked;
 				while (outPkts.size() < 10){
 					if (outPktCounter >= pktsToSend){
-						std::cout << endl << "Sender::process(): Pkts queued == pkts requested." << endl;
+						*fout << endl << "Sender::process(): Pkts queued == pkts requested." << endl;
 						break;
 					}
 					Pkt newOutPkt2; //create new pkt to add
@@ -107,37 +101,12 @@ void Sender::process(){
 					newOutPkt2.type = 'D';
 					outPkts.push_back(newOutPkt2);
 					outPktCounter++;
-					cout << newOutPkt2.seqNum << ", ";
+					*fout << newOutPkt2.seqNum << ", ";
 				}
-				cout << "<--end" << endl;
-			}
-
-			//outgoing is less than 4 add from last packet
-			else{
-				int highestSeqNum = LastAcked; //highest number currently in the que
-
-				//adding pkts
-				std::cout << "Sender::process(): OutGoing List < 4 Adding --> # ";
-				while (outPkts.size() < 10){
-					if (highestSeqNum > pktsToSend){
-						std::cout << endl << "Sender::process(): Pkts queued == pkts requested." << endl;
-						break;
-					}
-					Pkt newOutPkt2; //create new pkt to add
-					newOutPkt2.seqNum = highestSeqNum + 1;
-					newOutPkt2.type = 'D';
-					outPkts.push_back(newOutPkt2);
-					highestSeqNum++;
-					cout << newOutPkt2.seqNum << ", ";
-
-
-				}
-				cout << "<--end" << endl;
-			}
-			
-			
+				*fout << "<--end" << endl;
+			}		
 		}
-	}
+	
 }
 
 	
@@ -145,8 +114,8 @@ void Sender::process(){
 //checking to see if we've finished
 bool Sender::finished(){
 	if (cycleFinished==true){
-		cout << "Sender::finished(): Final Pkt Recieved and Confirmed" << endl;
-		cout << "Closing Connection..."<<endl;
+		*fout << "Sender::finished(): Final Pkt Recieved and Confirmed" << endl;
+		*fout << "Closing Connection..."<<endl;
 		return true;
 	}
 	else{
