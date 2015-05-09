@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include "List.h"
+
+
 using namespace std; 
 
 class Receiver{
@@ -43,7 +45,7 @@ Pkt Receiver::send(){
 	Pkt pktToReturn;
 	pktToReturn = rAckBox.front();
 	rAckBox.pop_front(); //remoing packet 
-	cout << "Receiver::receive(): Sending ACK Packet: " << pktToReturn.seqNum << endl;
+	cout << "Receiver::Send(): Sending ACK Packet: " << pktToReturn.seqNum << endl;
 	return pktToReturn;
 }
 
@@ -60,26 +62,32 @@ void Receiver::receive(const Pkt & thePkt){
 
 //process just arrived pkts and put them in ack
 void Receiver::process(){
-	rInbox.sort(); //lower case sort is primary merge sort
+	//rInbox.sort(); //lower case sort is primary merge sort
 	
-	cout << "Receiver::process(): Sorting Incoming Packets" << endl;
+	cout << "Receiver::process(): LastAck: "<< LastAckNumber<< " Sorting Incoming Pkts --> #";
 	
 	//updating ACK pkts and popping them from rINbox
 	while (rInbox.size() > 0){
-		if (rInbox.front().seqNum == LastAckNumber + 1){ //found next pkt in sequence
-			
-			//checking to see if it's the last pkt
-			if (rInbox.front().type == 'F'){
-				FpktReceived = true;
-				cout << "Receiver::process(): Final Packet Found" << endl;
-			}
-			LastAckNumber++;
+		if (rInbox.back().type == 'F'){
+			FpktReceived = true;
+			cout << "Receiver::process(): Final Packet Found" << endl;
 			rInbox.pop_front();
-		}
-		else{ //still waiting on another packet
 			break;
 		}
+		else{
+
+			if (rInbox.front().seqNum == LastAckNumber + 1){ //found next pkt in sequence
+				cout << rInbox.front().seqNum << "Type:" << rInbox.front().type << ", ";
+				//checking to see if it's the last pkt			
+				LastAckNumber++;
+				rInbox.pop_front();
+			}
+			else{ //still waiting on another packet
+				break;
+			}
+		}
 	}
+	cout << "<--end" << endl;
 	//prepping newAckPkt
 	Pkt NewAckPkt;
 
@@ -94,7 +102,7 @@ void Receiver::process(){
 	}
 	
 	// adding newpkt to rAckBox
-	rAckBox.push_back(NewAckPkt);
+	rAckBox.push_front(NewAckPkt);
 	cout << "Receiver::process(): Adding to AckList " << NewAckPkt;
 
 	

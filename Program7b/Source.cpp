@@ -7,6 +7,7 @@
 #include "Sender.h"
 #include "Receiver.h"
 #include "Network.h"
+
 using namespace std;
 
 
@@ -21,6 +22,7 @@ int main(){
 	int roundCnt = 0;
 	sender.setup(5);
 	rec.setup();
+
 	while (sender.finished() == false){
 		sender.process();
 		rec.process();
@@ -30,9 +32,13 @@ int main(){
 		network.deliver(rec);
 
 		roundCnt++;
+		cout << "----";
 		cout << endl << "Round: " << roundCnt << " complete." << endl;
+		cout << "Sender.OutPkt.Front(): " << sender.outPkts.front();
 		cout << "Sender.OutPkt.Back(): " << sender.outPkts.back();
 		cout << "Sender.Inpkts.Back(): "<<sender.inPkts.back();
+		cout << "Receiver.rInbox.Back(): " << rec.rInbox.back();
+		cout << "----" << endl;
 		system("pause");
 		
 	}

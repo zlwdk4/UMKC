@@ -168,11 +168,11 @@ const T List<T>::front() const{
 	if (Head != nullptr){
 		return Head->data;
 	}
-	else{
-		cout << "List<T>::front(): Head is null, Empty List." << endl;
-		//return -1;
-		
-	}
+	//else{
+	//	cout << "List<T>::front(): Head is null, Empty List." << endl;
+	//	//return -1;
+	//	
+	//}
 }
 
 template<class T>
@@ -180,10 +180,10 @@ const T List<T>::back() const{
 	if (Tail != nullptr){
 		return Tail->data;
 	}
-	else{
-		//return -1;
-		cout << "Tail is null, Empty List." << endl; 
-	}
+	//else{
+	//	//return -1;
+	//	cout << "List<T>::back():Tail is null, Empty List." << endl; 
+	//}
 }
 
 template<class T>
@@ -212,7 +212,9 @@ void List<T>::pop_front(){
 		else{
 			Node<T> *nodePtr = Head;
 			Head = nullptr;
+			Tail = nullptr;
 			delete nodePtr; 
+			count = 0; 
 		}
        
     }

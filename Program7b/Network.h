@@ -4,6 +4,8 @@
 #include "Sender.h"
 #include "Receiver.h"
 #include <vector>
+
+#include "Node.h"
 #include <iostream>
 using namespace std; 
 
@@ -17,20 +19,21 @@ public:
 	void deliver(Receiver& theRec);
 
 private:
-	vector<Pkt> DpktsfromSender, AckPktsfromReceiver;
+	List<Pkt> DpktsfromSender, AckPktsfromReceiver;
 };
 
 //Pick up from Sender
 void Network::pick_up(Sender & theSender){
 	
 	//while sender has Pkts and we have less than 4 in the vector pick up.
-	cout<<endl << "Network::pick_up(): Picking up from Sender" << " -->" << endl;
+	cout<<endl << "Network::pick_up(): from Sender Pkts -->#";
 	
 	while (theSender.outPkts.size() > 0 && DpktsfromSender.size() < 4){
+		
 		DpktsfromSender.push_back(theSender.send()); //grab Data Pkt from Sender and put in Vector
-		cout << "Network::pick_up(): Picked up Pkt: #" << DpktsfromSender.back().seqNum << " from Sender" << endl;
+		cout  << DpktsfromSender.back().seqNum << ", ";
 	}
-	cout << "---> end delivery" << endl<<endl;
+	cout << "--> end pickup" << endl<<endl;
 	//add dropping stuff later
 }
 
@@ -42,24 +45,24 @@ void Network::pick_up(Receiver & theRec){
 
 }
 
-//Deliver to Sender
+//Deliver 1 pkt to Sender
 void Network::deliver(Sender& theSender){
-	cout << "Network::pick_up(): Delivering to Sender" << endl;
-	while (AckPktsfromReceiver.size() > 0){
+	
 		theSender.inPkts.push_back(AckPktsfromReceiver.back()); //deliver one packet from ACK vector
-		AckPktsfromReceiver.pop_back(); //delete delivered packet
-	}
+		cout << "Network::Deliver(): Delivering pkt " << AckPktsfromReceiver.front().seqNum << " to Sender" << endl;
+		AckPktsfromReceiver.pop_front(); //delete delivered packet
+	
 }
 
-//Deliver to Receiver
+//Deliver up tp 4 to Receiver
 void Network::deliver(Receiver& theRec){
-	cout << endl << "Network::Deliver(): Delivering to Receiver" << " -->"<< endl;
+	cout << endl << "Network::Deliver(): to Receiver Pkts -->#";
 	
 	while (DpktsfromSender.size() > 0){
-		theRec.rInbox.push_back(DpktsfromSender.back()); //deliver one packet from ACK vector
-		cout << "Network::Deliver(): Delivering Pkt: #" << DpktsfromSender.back().seqNum << " to Receiver" << endl;
-		DpktsfromSender.pop_back(); //delete delivered packet
+		theRec.rInbox.push_back(DpktsfromSender.front()); //deliver one packet from ACK vector
+		cout << DpktsfromSender.front().seqNum << " Type:" << DpktsfromSender.front().type << ", ";
+		DpktsfromSender.pop_front(); //delete delivered packet
 		
 	}
-	cout << "---> end delivery" << endl;
+	cout << "--> end delivery" << endl;
 }
